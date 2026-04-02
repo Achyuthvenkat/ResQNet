@@ -147,7 +147,7 @@ class MeshRouter {
     final messageData = {
       'messageId': messageId,
       'senderId': localDeviceId,
-      'receiverId': isBroadcast ? 'BROADCAST' : receiverId,
+      'receiverId': receiverId,
       'content': encryptedContent,
       'timestamp': DateTime.now().millisecondsSinceEpoch,
       'ttl': initialTtl,

@@ -23,9 +23,16 @@ class MeshDatabase {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _createDB,
+      onUpgrade: _upgradeDB,
     );
+  }
+
+  Future _upgradeDB(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute('ALTER TABLE messages ADD COLUMN hops INTEGER DEFAULT 0');
+    }
   }
 
   Future _createDB(Database db, int version) async {
@@ -43,6 +50,7 @@ CREATE TABLE messages (
   content $textType,
   timestamp $integerType,
   ttl $integerType,
+  hops $integerType,
   status $textType
   )
 ''');

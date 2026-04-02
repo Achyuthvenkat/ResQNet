@@ -19,9 +19,11 @@ void main() async {
   if (!kIsWeb) {
     // Initialize hardware and permissions for mesh networking
     final hardwareService = HardwareService();
-    await hardwareService.requestAllPermissions();
+    bool allPerms = await hardwareService.requestAllPermissions();
+    print("Permissions all granted: $allPerms");
     await hardwareService.initializeBluetooth();
-    await hardwareService.initializeLocation();
+    bool locInit = await hardwareService.initializeLocation();
+    print("Location initialized: $locInit");
   }
   
   String deviceId;

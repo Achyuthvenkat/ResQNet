@@ -13,13 +13,15 @@ class ChatProvider extends ChangeNotifier {
 
   Future<void> loadMessages(String peerId) async {
     _currentPeerId = peerId;
-    _messages = await MeshDatabase.instance.getMessagesForChat(peerId, localDeviceId);
+    final results = await MeshDatabase.instance.getMessagesForChat(peerId, localDeviceId);
+    _messages = List<Map<String, dynamic>>.from(results);
     notifyListeners();
   }
 
   Future<void> loadAllMessages() async {
     _currentPeerId = ''; // All chats
-    _messages = await MeshDatabase.instance.getAllMessages();
+    final results = await MeshDatabase.instance.getAllMessages();
+    _messages = List<Map<String, dynamic>>.from(results);
     notifyListeners();
   }
 
@@ -27,6 +29,7 @@ class ChatProvider extends ChangeNotifier {
     // Only add if it belongs to the current chat or is broadcast
     if (_currentPeerId.isEmpty || 
         message['receiverId'] == 'BROADCAST' || 
+        message['receiverId'] == 'AUTHORITIES' || 
         message['senderId'] == _currentPeerId || 
         message['receiverId'] == _currentPeerId ||
         message['senderId'] == localDeviceId) {

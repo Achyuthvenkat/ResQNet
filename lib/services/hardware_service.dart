@@ -22,10 +22,10 @@ class HardwareService {
     ].request();
 
     bool allGranted = true;
-    for (var status in statuses.values) {
-      if (!status.isGranted) {
+    for (var entry in statuses.entries) {
+      print("Permission ${entry.key} status: ${entry.value}");
+      if (!entry.value.isGranted) {
         allGranted = false;
-        break;
       }
     }
     return allGranted;
